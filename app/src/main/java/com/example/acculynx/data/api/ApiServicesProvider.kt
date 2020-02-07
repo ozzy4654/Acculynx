@@ -1,7 +1,5 @@
-package com.example.acculynx.data
+package com.example.acculynx.data.api
 
-import android.app.Application
-import com.example.acculynx.data.api.QuestionsInterface
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -18,14 +16,14 @@ object ApiServicesProvider {
 
 
     init {
-        val client = createOkHttpClient()
+        val client =
+            createOkHttpClient()
 
-        questionService = provideStackExchangeRetrofit(client,provideGson()).create(
+        questionService = provideStackExchangeRetrofit(
+            client,
+            provideGson()
+        ).create(
             QuestionsInterface::class.java)
-    }
-
-    object NewQuestionService {
-
     }
 
     private fun createOkHttpClient(): OkHttpClient {

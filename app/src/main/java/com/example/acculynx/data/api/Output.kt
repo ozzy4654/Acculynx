@@ -1,4 +1,4 @@
-package com.example.acculynx.data.repository
+package com.example.acculynx.data.api
 
 
 sealed class Output<out T : Any>{

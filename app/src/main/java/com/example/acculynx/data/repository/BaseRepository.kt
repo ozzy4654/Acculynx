@@ -1,6 +1,7 @@
-package com.example.acculynx.data
+package com.example.acculynx.data.repository
 
 import android.util.Log
+import com.example.acculynx.data.api.Output
 import retrofit2.Response
 import java.io.IOException
 
@@ -17,7 +18,7 @@ open class BaseRepository {
         return output
 
     }
-    private suspend fun<T : Any> questionsApiOutput(call: suspend()-> Response<T> , error: String) : Output<T>{
+    private suspend fun<T : Any> questionsApiOutput(call: suspend()-> Response<T> , error: String) : Output<T> {
         val response = call.invoke()
         return if (response.isSuccessful)
             Output.Success(response.body()!!)

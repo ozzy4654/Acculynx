@@ -1,4 +1,4 @@
-package com.example.acculynx.data
+package com.example.acculynx.data.repository
 
 import com.example.acculynx.data.api.QuestionsInterface
 import com.example.acculynx.data.models.Question
