@@ -4,15 +4,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.fragment.app.FragmentTransaction
+import androidx.room.Room
 import com.example.acculynx.R
-
+import com.example.acculynx.data.db.AppDatabase
+import com.example.acculynx.ui.questionList.QuestionListFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
 
-private lateinit var questionViewModel: QuestionViewModel
+lateinit var fragmentTransaction: FragmentTransaction
+lateinit var db: AppDatabase
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,32 +20,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        this.supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+        this.supportActionBar!!.setHomeButtonEnabled(false)
+//todo need to get back arrow working
 
-        val viewModelFactory = QuestionViewModelProvider.QuestionViewModelFactory()
-        //Use view ModelFactory to initialize view model
-        questionViewModel = ViewModelProvider.NewInstanceFactory().create(QuestionViewModel::class.java)
-//        ViewModelProviders.of(this@MainActivity, viewModelFactory)
-//                .get(NewsViewModel::class.java)
+        db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "UserDB")
+            .fallbackToDestructiveMigration()
+            .build()
 
-        questionViewModel
-        //get latest news from view model
-        questionViewModel.getLatestQuestions()
-        //observe viewModel live data
-        questionViewModel.questionLiveData.observe(this, Observer {
-            //bind your ui here
+        val fragmentManager = supportFragmentManager
+        fragmentTransaction = fragmentManager.beginTransaction()
 
-            println("THE LIST BABYYYYYYYYY   ${it[0].link}")
-
-            quesListRecycler.apply {
-                layoutManager = LinearLayoutManager(this@MainActivity)
-                adapter = QuesListAdapter(
-                    this@MainActivity,
-                    it
-                )
-            }
-
-        })
-
+        fragmentTransaction.replace(
+            R.id.frag_container,
+            QuestionListFragment(this)
+        )
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
 
     }
 
@@ -63,5 +57,16 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+
+    /**
+     * allows user to backup through the creation flow
+     * it also notifies the user if they are about the exit the app
+     * since we dont save our fragment histories
+     */
+    override fun onBackPressed() {
+        supportFragmentManager.popBackStack()
+
     }
 }

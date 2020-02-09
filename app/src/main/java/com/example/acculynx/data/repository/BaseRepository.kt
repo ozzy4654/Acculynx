@@ -1,7 +1,7 @@
 package com.example.acculynx.data.repository
 
 import android.util.Log
-import com.example.acculynx.data.api.Output
+import com.example.acculynx.data.network.Output
 import retrofit2.Response
 import java.io.IOException
 

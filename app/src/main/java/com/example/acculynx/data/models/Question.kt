@@ -13,8 +13,6 @@ data class Question(
     val body: String,
     @SerializedName("is_answered")
     val isAnswered: Boolean,
-    @SerializedName("last_activity_date")
-    val lastActivityDate: Int,
     @SerializedName("link")
     val link: String,
     @SerializedName("question_id")

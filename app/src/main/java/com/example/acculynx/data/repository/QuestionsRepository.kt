@@ -1,10 +1,12 @@
 package com.example.acculynx.data.repository
 
-import com.example.acculynx.data.api.QuestionsInterface
+import com.example.acculynx.data.network.QuestionsInterface
 import com.example.acculynx.data.models.Question
 import com.example.acculynx.data.models.QuestionsResponse
 
-class QuestionsRepository(private val apiInterface: QuestionsInterface) : BaseRepository() {
+class QuestionsRepository(
+    private val apiInterface: QuestionsInterface
+    ) : BaseRepository() {
     //get latest news using safe api call
 
     suspend fun getLatestQuestions() :  MutableList<Question>?{

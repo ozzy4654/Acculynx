@@ -12,8 +12,6 @@ data class Answer(
     val questionId: Int,
     @SerializedName("score")
     val score: Int,
-    @SerializedName("title")
-    val title: String,
     @SerializedName("body")
     val body: String
 )
