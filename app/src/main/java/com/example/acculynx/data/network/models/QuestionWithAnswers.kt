@@ -10,5 +10,5 @@ data class QuestionWithAnswers(
     val question: Question,
 
     @Relation(parentColumn = "question_id", entityColumn = "question_id")
-    val ansList: List<Answer>
+    var ansList: List<Answer>
 )

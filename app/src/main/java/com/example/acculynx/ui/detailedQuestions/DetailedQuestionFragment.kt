@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.ques_list_item.questionTitle
 
 
 class DetailedQuestionFragment(
-    private val selectedQuestion: QuestionWithAnswers
+    private var selectedQuestion: QuestionWithAnswers
 ) : Fragment() {
 
     override fun onCreateView(
@@ -33,12 +33,18 @@ class DetailedQuestionFragment(
         (activity as AppCompatActivity?)!!.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity?)!!.supportActionBar!!.setHomeButtonEnabled(true)
 
-
         //set up the details
         questionTitle.text = HtmlCompat.fromHtml(selectedQuestion.question.title!!, 0)
         question.text = HtmlCompat.fromHtml(selectedQuestion.question.body!!, 0)
 
         //set up the recycler view for the answers
+        //check to make sure answers are not null since room is being weird
+        if (selectedQuestion.ansList.isNullOrEmpty()) {
+            //we need to grab it from question model....dumb i know but its workaround for now.
+            //todo come back and refactor this properly since using Room is still new for me
+            selectedQuestion.ansList = selectedQuestion.question.answers?: emptyList()
+        }
+
         ansRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(DividerItemDecoration(context, LinearLayout.VERTICAL))

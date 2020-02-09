@@ -16,7 +16,7 @@ fun stringToSomeObjectList(data: String?): List<Answer?>? {
     if (data == null) {
         return Collections.emptyList()
     }
-    val listType: Type = object : TypeToken<List<Any?>?>() {}.type
+    val listType: Type = object : TypeToken<List<Answer?>?>() {}.type
     return gson.fromJson<List<Answer?>>(data, listType)
 }
 

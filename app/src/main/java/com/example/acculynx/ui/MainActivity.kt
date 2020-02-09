@@ -1,9 +1,9 @@
 package com.example.acculynx.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.room.Room
 import com.example.acculynx.R
@@ -28,12 +28,12 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         this.supportActionBar!!.setDisplayHomeAsUpEnabled(false)
         this.supportActionBar!!.setHomeButtonEnabled(false)
-//todo need to get back arrow working
 
         db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
-            "UserDB")
+            "UserDB"
+        )
             .fallbackToDestructiveMigration()
             .build()
 
@@ -65,6 +65,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+//        hide/disable the arrow after press. since we
+        if (supportFragmentManager.backStackEntryCount > 1) {
+            this.supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+            this.supportActionBar!!.setHomeButtonEnabled(false)
+        }
+        return true
+    }
 
     /**
      * allows user to backup through the creation flow
@@ -72,7 +81,7 @@ class MainActivity : AppCompatActivity() {
      * since we dont save our fragment histories
      */
     override fun onBackPressed() {
-        if(supportFragmentManager.backStackEntryCount > 1)
+        if (supportFragmentManager.backStackEntryCount > 1)
             supportFragmentManager.popBackStack()
 
     }
