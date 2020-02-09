@@ -1,10 +1,10 @@
-package com.example.acculynx.data.db
+package com.example.acculynx.data.db.daos
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.acculynx.data.models.Question
+import com.example.acculynx.data.db.entities.User
 
 @Dao
 interface UserDao {

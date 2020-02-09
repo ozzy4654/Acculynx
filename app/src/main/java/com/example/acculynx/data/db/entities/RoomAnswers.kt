@@ -1,4 +1,4 @@
-package com.example.acculynx.data.db
+package com.example.acculynx.data.db.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

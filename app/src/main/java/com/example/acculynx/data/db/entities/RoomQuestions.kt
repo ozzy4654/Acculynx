@@ -1,6 +1,7 @@
-package com.example.acculynx.data.db
+package com.example.acculynx.data.db.entities
 
 import androidx.room.*
+import com.example.acculynx.data.db.GsonTypeConverter
 
 @Entity
 data class RoomQuestions(
