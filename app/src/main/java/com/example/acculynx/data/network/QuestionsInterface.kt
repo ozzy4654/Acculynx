@@ -1,6 +1,6 @@
 package com.example.acculynx.data.network
 
-import com.example.acculynx.data.models.QuestionsResponse
+import com.example.acculynx.data.network.models.QuestionsResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET

@@ -1,14 +1,17 @@
 package com.example.acculynx.ui.questionList
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import com.example.acculynx.data.db.AppDatabase
+import com.example.acculynx.data.db.daos.QuestionsDao
+import com.example.acculynx.data.db.entities.Question
+import com.example.acculynx.data.network.models.QuestionWithAnswers
 import com.example.acculynx.data.network.ApiServicesProvider
 import com.example.acculynx.data.repository.QuestionsRepository
-import com.example.acculynx.data.models.Question
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
-class QuestionViewModel : ViewModel() {
+class QuestionViewModel(application: Application) : AndroidViewModel(application) {
 
     //create a new Job
     private val parentJob = Job()
@@ -17,12 +20,35 @@ class QuestionViewModel : ViewModel() {
     //create a coroutine scope with the coroutine context
     private val scope = CoroutineScope(coroutineContext)
     //initialize news repo
-    private val questionsRepository : QuestionsRepository =
-        QuestionsRepository(
-            ApiServicesProvider.questionService
-        )
-    //live data that will be populated as question updates
-    val questionLiveData = MutableLiveData<MutableList<Question>>()
+    private val questionsDao : QuestionsDao = AppDatabase.getInstance(application, viewModelScope).questionDao()
+
+    private val questionsRepository : QuestionsRepository
+    //live api data that will be populated as question updates
+    val questionLiveData = MutableLiveData<MutableList<QuestionWithAnswers>>()
+
+    // The ViewModel maintains a reference to the repository to get data.
+    // LiveData gives us updated words when they change.
+    val allQuestion: LiveData<List<QuestionWithAnswers>>
+
+    init {
+        // Gets reference to WordDao from WordRoomDatabase to construct
+        // the correct WordRepository.
+        questionsRepository = QuestionsRepository(ApiServicesProvider.questionService, questionsDao)
+        allQuestion = questionsRepository.allQuestion
+    }
+
+    /**
+     * The implementation of insert() in the database is completely hidden from the UI.
+     * Room ensures that you're not doing any long running operations on
+     * the main thread, blocking the UI, so we don't need to handle changing Dispatchers.
+     * ViewModels have a coroutine scope based on their lifecycle called
+     * viewModelScope which we can use here.
+     */
+    fun insert(queston: Question) = viewModelScope.launch {
+        questionsRepository.questionsDao.saveQuestion(queston)
+    }
+
+
 
     fun getLatestQuestions() {
         ///launch the coroutine scope

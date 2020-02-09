@@ -9,14 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.acculynx.R
-import com.example.acculynx.data.db.AppDatabase
-import com.example.acculynx.data.models.Question
+import com.example.acculynx.data.network.models.QuestionWithAnswers
 import kotlinx.android.synthetic.main.detailed_question.*
 import kotlinx.android.synthetic.main.ques_list_item.questionTitle
 
 
 class DetailedQuestionFragment(
-    private val selectedQuestion: Question
+    private val selectedQuestion: QuestionWithAnswers
 ) : Fragment() {
 
     override fun onCreateView(
@@ -36,8 +35,8 @@ class DetailedQuestionFragment(
 
 
         //set up the details
-        questionTitle.text = HtmlCompat.fromHtml(selectedQuestion.title, 0)
-        question.text = HtmlCompat.fromHtml(selectedQuestion.body, 0)
+        questionTitle.text = HtmlCompat.fromHtml(selectedQuestion.question.title!!, 0)
+        question.text = HtmlCompat.fromHtml(selectedQuestion.question.body!!, 0)
 
         //set up the recycler view for the answers
         ansRecyclerView.apply {
@@ -45,7 +44,7 @@ class DetailedQuestionFragment(
             addItemDecoration(DividerItemDecoration(context, LinearLayout.VERTICAL))
             adapter = DetailedAnswerAdapter(
                 activity as AppCompatActivity,
-                selectedQuestion.answers
+                selectedQuestion.ansList
             )
         }
 

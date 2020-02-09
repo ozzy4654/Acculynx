@@ -4,17 +4,17 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.acculynx.data.db.entities.RoomAnswers
+import com.example.acculynx.data.db.entities.Answer
 
 @Dao
 interface AnswersDao {
 
-    @Query("SELECT * FROM RoomAnswers")
-    fun getRecentGuessList() : List<RoomAnswers>
+    @Query("SELECT * FROM Answer")
+    fun getRecentGuessList() : List<Answer>
 
     @Insert
-    fun saveAnswer(vararg ans: RoomAnswers)
+    fun saveAnswer(vararg ans: Answer)
 
     @Delete
-    fun delete(ans : RoomAnswers)
+    fun delete(ans : Answer)
 }

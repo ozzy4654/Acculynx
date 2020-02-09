@@ -14,6 +14,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 lateinit var fragmentTransaction: FragmentTransaction
 lateinit var db: AppDatabase
 
+// todo need to setup point system for answer guesses
+// todo need to create dialogs for successful guesses etc...
+// todo show score on bottom of screen.
+// todo, handle no network edge case i.e. they cant use app til they connect a network
+
+
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +72,8 @@ class MainActivity : AppCompatActivity() {
      * since we dont save our fragment histories
      */
     override fun onBackPressed() {
-        supportFragmentManager.popBackStack()
+        if(supportFragmentManager.backStackEntryCount > 1)
+            supportFragmentManager.popBackStack()
 
     }
 }
