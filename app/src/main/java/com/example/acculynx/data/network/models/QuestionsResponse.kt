@@ -1,4 +1,4 @@
-package com.example.acculynx.data.models
+package com.example.acculynx.data.network.models
 
 
 import com.example.acculynx.data.db.entities.Question

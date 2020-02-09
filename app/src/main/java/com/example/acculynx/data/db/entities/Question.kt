@@ -5,7 +5,7 @@ import com.example.acculynx.data.db.GsonTypeConverter
 import com.google.gson.annotations.SerializedName
 
 @Entity
-data class RoomQuestions(
+data class Question(
     @PrimaryKey
     @SerializedName("question_id")
     @ColumnInfo(name = "question_id")
@@ -21,7 +21,7 @@ data class RoomQuestions(
 
     @ColumnInfo(name ="answers")
     @TypeConverters(GsonTypeConverter::class)
-    val answers : List<RoomAnswers>?,
+    val answers : List<Answer>?,
 
     @ColumnInfo(name ="body")
     val body: String?,

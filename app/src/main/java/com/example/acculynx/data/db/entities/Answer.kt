@@ -7,12 +7,14 @@ import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity(foreignKeys = [ForeignKey(entity = RoomQuestions::class,
+@Entity(foreignKeys = [ForeignKey(entity = Question::class,
     parentColumns = arrayOf("question_id"),
     childColumns = arrayOf("question_id"),
-    onDelete = CASCADE)]
+    onDelete = CASCADE,
+    onUpdate = CASCADE)
+    ]
 )
-data class RoomAnswers (
+data class Answer (
     @PrimaryKey
     @SerializedName("answer_id")
     @ColumnInfo(name = "answer_id")
