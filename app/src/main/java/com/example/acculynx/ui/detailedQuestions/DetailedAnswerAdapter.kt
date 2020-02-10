@@ -36,7 +36,7 @@ class DetailedAnswerAdapter(
             activity.applicationContext.packageName
         )
 
-        detailedQuestionViewModel.score.value = (prefs.getInt("score", 0))
+        detailedQuestionViewModel.score.value = (prefs.getInt(activity.getString(R.string.score_key), 0))
         // Create the observer which updates the UI.
         val scoreObserver = Observer<Int> { newScore ->
             // Update the UI, in this case, a TextView.
@@ -68,13 +68,13 @@ class DetailedAnswerAdapter(
         //set our onclick method to view detailed question
         //Only count score once, i.e. don't let user spam correct ans to boost score
         holder.title.onClick {
-            if (holder.answerView.tag != "Selected") {
+            if (holder.answerView.tag != activity.getString(R.string.tag_selected)) {
                 val tempScore = detailedQuestionViewModel.score.value ?: 0
                 if (!answer?.isAccepted!!) {
                     //highlight the view red and then back to normal color
                     //Minus 1 point
                     holder.answerView.backgroundColor = RED
-                    holder.answerView.tag = "Selected"
+                    holder.answerView.tag = activity.getString(R.string.tag_selected)
                     holder.title.setColorClickableText(WHITE)
                     detailedQuestionViewModel.score.value = (tempScore - 1)
 
@@ -82,11 +82,11 @@ class DetailedAnswerAdapter(
                     //highlight the view green and then back to normal color
                     //Add 1 point
                     holder.answerView.backgroundColor = activity.getColor(R.color.colorPrimary)
-                    holder.answerView.tag = "Selected"
+                    holder.answerView.tag = activity.getString(R.string.tag_selected)
                     detailedQuestionViewModel.score.value = (tempScore + 1)
                 }
 
-                prefs.edit().putInt("score", detailedQuestionViewModel.score.value ?: 0).apply()
+                prefs.edit().putInt(activity.getString(R.string.score_key), detailedQuestionViewModel.score.value ?: 0).apply()
             }
         }
     }
