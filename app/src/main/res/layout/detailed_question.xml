@@ -38,8 +38,8 @@
             app:showTrimExpandedText="true"
             android:textSize="@dimen/default_text_size"
             android:textColor="@android:color/black"
-            app:trimCollapsedText="Show More"
-            app:trimExpandedText="Show Less"
+            app:trimCollapsedText="@string/show_more"
+            app:trimExpandedText="@string/show_less"
             app:trimLines="4"
             app:trimMode="trimModeLine" />
 

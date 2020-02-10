@@ -15,6 +15,7 @@ import com.example.acculynx.data.db.entities.Answer
 import com.example.acculynx.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.ans_list_item.view.*
+import kotlinx.android.synthetic.main.detailed_question.*
 import splitties.views.backgroundColor
 import splitties.views.onClick
 
@@ -27,7 +28,8 @@ class DetailedAnswerAdapter(
 
     private val detailedQuestionViewModel =
         ViewModelProvider(activity).get(DetailedQuestionViewModel::class.java)
-
+    private val tagName = activity.getString(R.string.tag_selected)
+    private var tempView :View? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnsViewHolder {
         //set up our prefs helper
@@ -71,18 +73,13 @@ class DetailedAnswerAdapter(
             if (holder.answerView.tag != activity.getString(R.string.tag_selected)) {
                 val tempScore = detailedQuestionViewModel.score.value ?: 0
                 if (!answer?.isAccepted!!) {
-                    //highlight the view red and then back to normal color
                     //Minus 1 point
-                    holder.answerView.backgroundColor = RED
-                    holder.answerView.tag = activity.getString(R.string.tag_selected)
-                    holder.title.setColorClickableText(WHITE)
+                    showAnswerAfterGuess()
                     detailedQuestionViewModel.score.value = (tempScore - 1)
-
                 } else {
-                    //highlight the view green and then back to normal color
-                    //Add 1 point
-                    holder.answerView.backgroundColor = activity.getColor(R.color.colorPrimary)
-                    holder.answerView.tag = activity.getString(R.string.tag_selected)
+//                    //Add 1 point
+                    holder.title.setColorClickableText(WHITE)
+                    showAnswerAfterGuess()
                     detailedQuestionViewModel.score.value = (tempScore + 1)
                 }
 
@@ -90,6 +87,22 @@ class DetailedAnswerAdapter(
             }
         }
     }
+
+    private fun showAnswerAfterGuess() {
+        //set all the other views to red
+        for (i in 0 until this.itemCount) {
+            tempView = activity.ansRecyclerView.layoutManager?.findViewByPosition(i)
+
+            if(tempView?.tag != tagName && !ansList?.get(i)?.isAccepted!!) {
+                tempView?.tag = tagName
+
+            } else {
+                tempView?.backgroundColor = activity.getColor(R.color.colorPrimary)
+                tempView?.tag = tagName
+            }
+        }
+    }
+
 }
 
 class AnsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

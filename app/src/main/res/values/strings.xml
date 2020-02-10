@@ -12,6 +12,8 @@
     <string name="network_alert_title">No Internet Connection</string>
     <string name="network_alert_message">Loss of a Data connection. Please try connecting to WIFI or check your service provider</string>
     <string name="dialog_pos_button_text">Okay</string>
+    <string name="show_more">Show More</string>
+    <string name="show_less">Show Less</string>
 
 
 </resources>
