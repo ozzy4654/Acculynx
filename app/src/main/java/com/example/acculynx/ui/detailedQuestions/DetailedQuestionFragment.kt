@@ -13,10 +13,8 @@ import com.example.acculynx.data.network.models.QuestionWithAnswers
 import kotlinx.android.synthetic.main.detailed_question.*
 import kotlinx.android.synthetic.main.ques_list_item.questionTitle
 
-
-class DetailedQuestionFragment(
-    private var selectedQuestion: QuestionWithAnswers
-) : Fragment() {
+lateinit var selectedQuestion : QuestionWithAnswers
+class DetailedQuestionFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,5 +54,7 @@ class DetailedQuestionFragment(
 
     }
 
-
+    fun setSelectedQuestion(question : QuestionWithAnswers) {
+        selectedQuestion = question
+    }
 }

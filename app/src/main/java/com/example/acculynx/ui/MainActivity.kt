@@ -16,8 +16,8 @@ import com.example.acculynx.R
 import com.example.acculynx.data.db.AppDatabase
 import com.example.acculynx.ui.detailedQuestions.DetailedQuestionViewModel
 import com.example.acculynx.ui.questionList.QuestionListFragment
-import com.example.acculynx.utils.createNetworkCallback
 import com.example.acculynx.utils.PreferenceHelper
+import com.example.acculynx.utils.createNetworkCallback
 import com.example.acculynx.utils.networkRequest
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -26,8 +26,8 @@ lateinit var db: AppDatabase
 
 private lateinit var prefs: SharedPreferences
 
-var networkCallback : NetworkCallback? = null
-var cm : ConnectivityManager? = null
+var networkCallback: NetworkCallback? = null
+var cm: ConnectivityManager? = null
 
 class MainActivity : AppCompatActivity() {
 
@@ -66,18 +66,21 @@ class MainActivity : AppCompatActivity() {
         cm = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         cm!!.registerNetworkCallback(networkRequest, networkCallback)
 
-        val fragmentManager = supportFragmentManager
-        fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frag_container, QuestionListFragment(this))
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit()
-
+        //saved instancestate call since we dont want to keep recreating frags everytime phone rotates
+        if (savedInstanceState == null) {
+            val fragmentManager = supportFragmentManager
+            fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.frag_container, QuestionListFragment())
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+        }
     }
 
     override fun onStop() {
         super.onStop()
         cm?.unregisterNetworkCallback(networkCallback)
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -104,11 +107,6 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    /**
-     * allows user to backup through the creation flow
-     * it also notifies the user if they are about the exit the app
-     * since we dont save our fragment histories
-     */
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 1)
             supportFragmentManager.popBackStack()

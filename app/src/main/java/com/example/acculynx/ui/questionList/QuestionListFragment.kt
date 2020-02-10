@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,7 +27,8 @@ private lateinit var savedQuestionLiveData : LiveData<List<QuestionWithAnswers>>
 private lateinit var apiQuestionLiveData : MutableLiveData<MutableList<QuestionWithAnswers>>
 private lateinit var prefs : SharedPreferences
 
-class QuestionListFragment(private val mainActivity: MainActivity) : Fragment() {
+class QuestionListFragment : Fragment() {
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -37,7 +39,7 @@ class QuestionListFragment(private val mainActivity: MainActivity) : Fragment() 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //set up our prefs helper
-        prefs = PreferenceHelper.customPrefs(mainActivity.applicationContext, mainActivity.applicationContext.packageName)
+        prefs = PreferenceHelper.customPrefs(this.activity?.applicationContext!!, this.activity!!.applicationContext.packageName)
 
         //Use view ModelFactory to initialize view model
         questionViewModel = ViewModelProvider(this).get(QuestionViewModel::class.java)
@@ -57,14 +59,14 @@ class QuestionListFragment(private val mainActivity: MainActivity) : Fragment() 
         // in the foreground.
         savedQuestionLiveData.observe(viewLifecycleOwner, Observer { questions ->
             // Update the cached copy of the  in the adapter.
-            if (prefs.getInt(mainActivity.getString(R.string.tab_pos_key), 0) == 1) {
+            if (prefs.getInt(this.activity?.getString(R.string.tab_pos_key), 0) == 1) {
                 (quesListRecycler.adapter as QuesListAdapter).setQuestions(questions)
             }
         })
 
         apiQuestionLiveData.observe(viewLifecycleOwner, Observer {
             //bind your ui here
-            if (prefs.getInt(mainActivity.getString(R.string.tab_pos_key), 0) == 0) {
+            if (prefs.getInt(this.activity?.getString(R.string.tab_pos_key), 0) == 0) {
                 (quesListRecycler.adapter as QuesListAdapter).setQuestions(it)
             }
 
@@ -76,7 +78,8 @@ class QuestionListFragment(private val mainActivity: MainActivity) : Fragment() 
         quesListRecycler.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(DividerItemDecoration(context, LinearLayout.VERTICAL))
-            adapter = QuesListAdapter(mainActivity, questionViewModel)
+            adapter = QuesListAdapter(this@QuestionListFragment.activity as AppCompatActivity
+                , questionViewModel)
         }
 
     }
@@ -123,7 +126,7 @@ class QuestionListFragment(private val mainActivity: MainActivity) : Fragment() 
 
     private fun updateTabPos(position:Int) {
         prefs.edit()
-            .putInt(mainActivity.getString(R.string.tab_pos_key), position)
+            .putInt(this.activity?.getString(R.string.tab_pos_key), position)
             .apply()
     }
 }

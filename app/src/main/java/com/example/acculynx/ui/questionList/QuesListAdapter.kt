@@ -56,9 +56,10 @@ class QuesListAdapter(
 
             val fragmentManager = activity.supportFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()
-
+            val frag = DetailedQuestionFragment()
+            frag.setSelectedQuestion(quesList?.get(position)!!)
             fragmentTransaction.replace(R.id.frag_container,
-                DetailedQuestionFragment(quesList?.get(position)!!)
+                DetailedQuestionFragment()
             )
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
