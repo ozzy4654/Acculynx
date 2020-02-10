@@ -1,6 +1,5 @@
 package com.example.acculynx.ui.questionList
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.acculynx.R
 import com.example.acculynx.data.network.models.QuestionWithAnswers
 import com.example.acculynx.ui.MainActivity
+import com.example.acculynx.utils.PreferenceHelper
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_ques_list.*
 
@@ -57,14 +57,14 @@ class QuestionListFragment(private val mainActivity: MainActivity) : Fragment() 
         // in the foreground.
         savedQuestionLiveData.observe(viewLifecycleOwner, Observer { questions ->
             // Update the cached copy of the  in the adapter.
-            if (prefs.getInt("tabPos", 0) == 1) {
+            if (prefs.getInt(mainActivity.getString(R.string.tab_pos_key), 0) == 1) {
                 (quesListRecycler.adapter as QuesListAdapter).setQuestions(questions)
             }
         })
 
         apiQuestionLiveData.observe(viewLifecycleOwner, Observer {
             //bind your ui here
-            if (prefs.getInt("tabPos", 0) == 0) {
+            if (prefs.getInt(mainActivity.getString(R.string.tab_pos_key), 0) == 0) {
                 (quesListRecycler.adapter as QuesListAdapter).setQuestions(it)
             }
 
@@ -83,7 +83,7 @@ class QuestionListFragment(private val mainActivity: MainActivity) : Fragment() 
 
     private fun setTabListeners() {
         // set our default tab to network questions
-        tabLayout.getTabAt(prefs.getInt("tabPos", 0))?.let {
+        tabLayout.getTabAt(prefs.getInt(getString(R.string.tab_pos_key), 0))?.let {
             tabLayout.selectTab(it)
         }
 
@@ -109,48 +109,20 @@ class QuestionListFragment(private val mainActivity: MainActivity) : Fragment() 
             //network questions
             0 -> {
                 updateTabPos(0)
-                (quesListRecycler.adapter as QuesListAdapter).setQuestions(apiQuestionLiveData.value!!)
+                (quesListRecycler.adapter as QuesListAdapter).setQuestions(apiQuestionLiveData.value)
             }
 
             //saved questions
             1 -> {
-                updateTabPos(0)
-                (quesListRecycler.adapter as QuesListAdapter).setQuestions(savedQuestionLiveData.value!!)
+                updateTabPos(1)
+                (quesListRecycler.adapter as QuesListAdapter).setQuestions(savedQuestionLiveData.value)
             }
-
         }
     }
 
     private fun updateTabPos(position:Int) {
         prefs.edit()
-            .putInt("tabPos", position)
+            .putInt(mainActivity.getString(R.string.tab_pos_key), position)
             .apply()
-
-    }
-
-    object PreferenceHelper {
-        fun customPrefs(context: Context, name: String): SharedPreferences =
-            context.getSharedPreferences(name, Context.MODE_PRIVATE)
-
-        inline fun SharedPreferences.edit(operation: (SharedPreferences.Editor) -> Unit) {
-            val editor = this.edit()
-            operation(editor)
-            editor.apply()
-        }
-
-        /**
-         * puts a key value pair in shared prefs if doesn't exists, otherwise updates value on given [key]
-         */
-        operator fun SharedPreferences.set(key: String, value: Any?) {
-            when (value) {
-                is String? -> edit{ it.putString(key, value) }
-                is Int -> edit { it.putInt(key, value) }
-                is Boolean -> edit { it.putBoolean(key, value) }
-                is Float -> edit { it.putFloat(key, value) }
-                is Long -> edit { it.putLong(key, value) }
-                else -> throw UnsupportedOperationException("Not yet implemented")
-            }
-        }
-
     }
 }

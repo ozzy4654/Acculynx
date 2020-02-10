@@ -20,8 +20,11 @@ class QuesListAdapter(
 
     private var quesList : MutableList<QuestionWithAnswers>? = null
 
-    internal fun setQuestions(questions: List<QuestionWithAnswers>) {
-        this.quesList = questions.toMutableList()
+    internal fun setQuestions(questions: List<QuestionWithAnswers>?) {
+        if (questions != null) {
+            this.quesList = questions.toMutableList()
+        }else
+            this.quesList?.clear()
         notifyDataSetChanged()
     }
 
@@ -49,15 +52,13 @@ class QuesListAdapter(
         //set our onclick method to view detailed question
         holder.questionCard.onClick {
 
-            //todo make sure ans are saved
-            // we want to save this question to our room db also need to make sure answers are saved too
             selectedQuestion?.let { questionViewModel.insert(it) }
 
             val fragmentManager = activity.supportFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()
 
             fragmentTransaction.replace(R.id.frag_container,
-                DetailedQuestionFragment(quesList?.get(position)!!) //todo comeback here and fixx !!
+                DetailedQuestionFragment(quesList?.get(position)!!)
             )
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()

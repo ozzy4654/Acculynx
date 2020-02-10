@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">Acculynx</string>
     <string name="action_settings">Settings</string>
+    <string name="possible_answers">Possible Answers:</string>
+    <string name="new_questions">New Questions</string>
+    <string name="previous_questions">Previous Questions</string>
+    <string name="choose_a_answer_below">Choose a answer below:</string>
+    <string name="your_score_for_all_your_guesses">Your Score for all your guesses:</string>
+    <string name="tab_pos_key">tabPos</string>
+    <string name="tag_selected">Selected</string>
+    <string name="score_key">score</string>
+
+
 </resources>

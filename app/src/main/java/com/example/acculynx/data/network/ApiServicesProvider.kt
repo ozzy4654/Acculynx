@@ -14,20 +14,15 @@ object ApiServicesProvider {
      */
     val questionService: QuestionsInterface
 
-
     init {
-        val client =
-            createOkHttpClient()
-
-        questionService = provideStackExchangeRetrofit(
-            client,
-            provideGson()
-        ).create(
-            QuestionsInterface::class.java)
+        val client = createOkHttpClient()
+        questionService = provideStackExchangeRetrofit(client, provideGson())
+            .create(QuestionsInterface::class.java)
     }
 
     private fun createOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
+        return OkHttpClient
+            .Builder()
             .build()
     }
 
@@ -38,6 +33,5 @@ object ApiServicesProvider {
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
 
-    private fun provideGson() = GsonBuilder()
-        .create()
+    private fun provideGson() = GsonBuilder().create()
 }

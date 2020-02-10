@@ -8,10 +8,9 @@ import java.lang.reflect.Type
 import java.util.*
 
 class GsonTypeConverter {
-var gson = Gson()
+private var gson = Gson()
 
 @TypeConverter
-
 fun stringToSomeObjectList(data: String?): List<Answer?>? {
     if (data == null) {
         return Collections.emptyList()

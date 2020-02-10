@@ -1,24 +1,32 @@
 package com.example.acculynx.ui
 
+import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.ConnectivityManager.NetworkCallback
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.example.acculynx.R
 import com.example.acculynx.data.db.AppDatabase
+import com.example.acculynx.ui.detailedQuestions.DetailedQuestionViewModel
 import com.example.acculynx.ui.questionList.QuestionListFragment
+import com.example.acculynx.utils.Networkee
+import com.example.acculynx.utils.PreferenceHelper
+import com.example.acculynx.utils.networkRequest
 import kotlinx.android.synthetic.main.activity_main.*
 
 lateinit var fragmentTransaction: FragmentTransaction
 lateinit var db: AppDatabase
 
-// todo need to setup point system for answer guesses
-// todo need to create dialogs for successful guesses etc...
-// todo show score on bottom of screen.
-// todo, handle no network edge case i.e. they cant use app til they connect a network
+private lateinit var prefs: SharedPreferences
 
+var networkCallback : NetworkCallback? = null
+var cm : ConnectivityManager? = null
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,27 +36,39 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         this.supportActionBar!!.setDisplayHomeAsUpEnabled(false)
         this.supportActionBar!!.setHomeButtonEnabled(false)
+        prefs = PreferenceHelper.customPrefs(applicationContext, applicationContext.packageName)
 
-        db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java,
-            "UserDB"
-        )
+
+        val detailedQuestionViewModel = ViewModelProvider(this)
+            .get(DetailedQuestionViewModel::class.java)
+        // Create the observer which updates the UI.
+        val scoreObserver = Observer<Int> { newScore -> scoreValue.text = newScore.toString() }
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        detailedQuestionViewModel.score.observe(this, scoreObserver)
+        //set initial score on launch
+        detailedQuestionViewModel.score.value = (prefs.getInt(activity.getString(R.string.score_key), 0))
+
+        db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "QuestionDB")
             .fallbackToDestructiveMigration()
             .build()
 
+        //network checker from Android Developers site
+        networkCallback = Networkee(this)
+        cm = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        cm!!.registerNetworkCallback(networkRequest, networkCallback)
+
         val fragmentManager = supportFragmentManager
         fragmentTransaction = fragmentManager.beginTransaction()
-
-        fragmentTransaction.replace(
-            R.id.frag_container,
-            QuestionListFragment(this)
-        )
+        fragmentTransaction.replace(R.id.frag_container, QuestionListFragment(this))
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
 
     }
 
+    override fun onStop() {
+        super.onStop()
+        cm?.unregisterNetworkCallback(networkCallback)
+    }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)

@@ -9,17 +9,19 @@ open class BaseRepository {
 
     suspend fun <T : Any> safeApiCall(call : suspend()-> Response<T>, error : String) :  T?{
         val result = questionsApiOutput(call, error)
-        var output : T? = null
+        var data : T? = null
+
         when(result){
             is Output.Success ->
-                output = result.output
+                data = result.data
             is Output.Error -> Log.e("Error", "The $error and the ${result.exception}")
         }
-        return output
+        return data
 
     }
     private suspend fun<T : Any> questionsApiOutput(call: suspend()-> Response<T> , error: String) : Output<T> {
         val response = call.invoke()
+
         return if (response.isSuccessful)
             Output.Success(response.body()!!)
         else

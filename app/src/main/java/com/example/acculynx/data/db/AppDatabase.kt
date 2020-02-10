@@ -7,19 +7,16 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.acculynx.data.db.daos.AnswersDao
 import com.example.acculynx.data.db.daos.QuestionsDao
-import com.example.acculynx.data.db.daos.UserDao
 import com.example.acculynx.data.db.entities.Answer
 import com.example.acculynx.data.db.entities.Question
-import com.example.acculynx.data.db.entities.User
 import kotlinx.coroutines.CoroutineScope
 
-private const val DATABASE = "UserDB"
+private const val DATABASE = "QuestionDB"
 
-@Database(entities = [User::class, Question::class, Answer::class], version = 14, exportSchema =
-false)
+@Database(entities = [Question::class, Answer::class], version = 15, exportSchema = false)
+
 @TypeConverters(GsonTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun userDao(): UserDao
     abstract fun questionDao(): QuestionsDao
     abstract fun answerDao(): AnswersDao
 

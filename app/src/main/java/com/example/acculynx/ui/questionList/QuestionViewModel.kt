@@ -31,8 +31,9 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
     val allQuestion: LiveData<List<QuestionWithAnswers>>
 
     init {
-        // Gets reference to WordDao from WordRoomDatabase to construct
-        // the correct WordRepository.
+        // Gets reference to QuestionDao from AppDatabase to construct
+        // the correct QuestionRepository.
+        // structure here follows google code lab (Word list)
         questionsRepository = QuestionsRepository(ApiServicesProvider.questionService, questionsDao)
         allQuestion = questionsRepository.allQuestion
     }

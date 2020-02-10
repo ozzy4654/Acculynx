@@ -18,13 +18,13 @@
             android:id="@+id/newQuesTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Questions" />
+            android:text="@string/new_questions" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/prevQuesTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Previous Questions" />
+            android:text="@string/previous_questions" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.recyclerview.widget.RecyclerView
