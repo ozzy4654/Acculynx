@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/answerItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <com.borjabravo.readmoretextview.ReadMoreTextView
+        android:id="@+id/answerDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:ellipsize="start"
+        android:focusable="true"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/default_text_size"
+        app:showTrimExpandedText="true"
+        app:trimCollapsedText="@string/show_more"
+        app:trimExpandedText="@string/show_less"
+        app:trimLength="90"
+        app:trimMode="trimModeLength"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="How to limit input" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
