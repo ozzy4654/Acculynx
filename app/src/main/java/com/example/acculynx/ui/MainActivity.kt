@@ -1,6 +1,7 @@
 package com.example.acculynx.ui
 
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.ConnectivityManager.NetworkCallback
 import android.os.Bundle
@@ -42,7 +43,15 @@ class MainActivity : AppCompatActivity() {
         val detailedQuestionViewModel = ViewModelProvider(this)
             .get(DetailedQuestionViewModel::class.java)
         // Create the observer which updates the UI.
-        val scoreObserver = Observer<Int> { newScore -> scoreValue.text = newScore.toString() }
+        val scoreObserver = Observer<Int> { newScore ->
+            run {
+                scoreValue.text = newScore.toString()
+                if (newScore >= 0)
+                    scoreValue.setTextColor(this@MainActivity.getColor(R.color.colorPrimary))
+                else
+                    scoreValue.setTextColor(Color.RED)
+            }
+        }
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         detailedQuestionViewModel.score.observe(this, scoreObserver)
         //set initial score on launch
