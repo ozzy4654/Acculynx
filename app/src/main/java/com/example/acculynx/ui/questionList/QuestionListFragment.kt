@@ -109,6 +109,7 @@ class QuestionListFragment(private val mainActivity: MainActivity) : Fragment() 
             //network questions
             0 -> {
                 updateTabPos(0)
+                questionViewModel.getLatestQuestions()
                 (quesListRecycler.adapter as QuesListAdapter).setQuestions(apiQuestionLiveData.value)
             }
 

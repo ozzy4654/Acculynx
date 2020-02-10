@@ -9,6 +9,9 @@
     <string name="tab_pos_key">tabPos</string>
     <string name="tag_selected">Selected</string>
     <string name="score_key">score</string>
+    <string name="network_alert_title">No Internet Connection</string>
+    <string name="network_alert_message">Loss of a Data connection. Please try connecting to WIFI or check your service provider</string>
+    <string name="dialog_pos_button_text">Okay</string>
 
 
 </resources>

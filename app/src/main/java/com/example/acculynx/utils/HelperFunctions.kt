@@ -37,14 +37,15 @@ object PreferenceHelper {
     }
 }
 
-fun Networkee(activity: AppCompatActivity): ConnectivityManager.NetworkCallback {
+fun createNetworkCallback(activity: AppCompatActivity): ConnectivityManager.NetworkCallback {
     //network checker from Android Developers site
-    //    val cm = activity.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-    //    cm.registerNetworkCallback(networkRequest, networkCallback)
     return object : ConnectivityManager.NetworkCallback() {
-        val builder = AlertDialog.Builder(activity, R.style.Theme_AppCompat_Dialog_Alert)
-            .setTitle("No Internet Connection")
-            .setMessage("Loss of a Data connection. Please try connecting to WIFI or check your service provider")
+        val builder = AlertDialog.Builder(activity, R.style.Theme_AppCompat_Light_Dialog)
+            .setTitle(activity.getString(R.string.network_alert_title))
+            .setMessage(activity.getString(R.string.network_alert_message))
+            .setPositiveButton(activity.getString(R.string.dialog_pos_button_text)) { dialog, _ -> dialog.dismiss()
+            }
+
 
         override fun onAvailable(network: Network) {
             dialog?.dismiss()

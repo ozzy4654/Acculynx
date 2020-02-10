@@ -15,7 +15,7 @@ import com.example.acculynx.R
 import com.example.acculynx.data.db.AppDatabase
 import com.example.acculynx.ui.detailedQuestions.DetailedQuestionViewModel
 import com.example.acculynx.ui.questionList.QuestionListFragment
-import com.example.acculynx.utils.Networkee
+import com.example.acculynx.utils.createNetworkCallback
 import com.example.acculynx.utils.PreferenceHelper
 import com.example.acculynx.utils.networkRequest
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,14 +46,14 @@ class MainActivity : AppCompatActivity() {
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         detailedQuestionViewModel.score.observe(this, scoreObserver)
         //set initial score on launch
-        detailedQuestionViewModel.score.value = (prefs.getInt(activity.getString(R.string.score_key), 0))
+        detailedQuestionViewModel.score.value = (prefs.getInt(getString(R.string.score_key), 0))
 
         db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "QuestionDB")
             .fallbackToDestructiveMigration()
             .build()
 
         //network checker from Android Developers site
-        networkCallback = Networkee(this)
+        networkCallback = createNetworkCallback(this)
         cm = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         cm!!.registerNetworkCallback(networkRequest, networkCallback)
 
