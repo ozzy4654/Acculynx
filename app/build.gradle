@@ -40,6 +40,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
+
     implementation 'com.borjabravo:readmoretextview:2.1.0'
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
